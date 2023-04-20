@@ -1,6 +1,8 @@
 const UserService = require("../service/user.service");
 const MongoDB = require("../utils/mongodb.util");
 const ApiError = require("../api-error")
+var jwt = require('jsonwebtoken');
+const secret_key = '12345aA!';
 
 exports.createUser = async (req, res, next)=>{
     if (!req.body?.userName) {
@@ -75,13 +77,25 @@ exports.login = async (req, res, next)=>{
         const document = await userService.findByUserName(req.body?.userName);
         
         if(!document[0]){
-            return next(new ApiError(404, "Contact not found"));
+            return res.json({
+                message: "Not find username",
+                status: 404
+            })
         } 
         if(document[0].password != req.body?.password){
-            return res.send("Password not right!")    
+            return res.json({
+                message: "Password not right",
+                status: 400
+            })   
         }
-        
-        return res.send("login sucessfully");
+        const token = jwt.sign({userName: document[0].userName},secret_key,{expiresIn: '1d'});
+        console.log(token);
+        return res.json({
+            status: 200,
+            result: 'success',
+            token: token,
+            data: document[0],
+        });
         
     } catch (error){
         return next (

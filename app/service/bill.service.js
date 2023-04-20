@@ -2,11 +2,10 @@ const {ObjectId} = require("mongodb");
 
 class BillService {
     constructor(client) {
-        this.Bill = client.db().collection("bill")
+        this.Bill = client.db().collection("bills")
     }
     extractBillData(payload) {
         const bill ={
-            _id_hd: payload._id_hd,
             nameCustomer: payload.nameCustomer,
             address:  payload.address, 
             phone: payload.phone,      
@@ -14,6 +13,7 @@ class BillService {
             ngaylap: payload.ngaylap,
             ngaymuon: payload.ngaymuon,
             ngaytra: payload.ngaytra,
+            tinhTrang: payload.tinhTrang,
         };
         Object.keys(bill).forEach(
             (key) => bill[key] === undefined && delete bill[key]
@@ -25,7 +25,7 @@ class BillService {
         const bill = this.extractBillData(payload);
         const result = await this.Bill.findOneAndUpdate(
             bill,
-            {$set: {}},
+            {$set: {tinhTrang: bill.tinhTrang === true}},
             {returnDocument: "after", upsert: true}
         );
         return result.value;

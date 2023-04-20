@@ -3,7 +3,7 @@ const MongoDB = require("../utils/mongodb.util");
 const ApiError = require("../api-error")
 
 exports.createBill = async (req, res, next)=>{
-    if (!req.body?._id_hd && !req.body?._id_kh) {
+    if (!req.body?.nameCustomer) {
         return next(new ApiError(400, "id can not be empty"));
     }
     try {
