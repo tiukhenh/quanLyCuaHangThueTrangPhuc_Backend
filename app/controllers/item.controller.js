@@ -1,6 +1,7 @@
 const ItemService = require("../service/item.service");
 const MongoDB = require("../utils/mongodb.util");
-const ApiError = require("../api-error")
+const ApiError = require("../api-error");
+const { ObjectId } = require("mongodb");
 
 exports.create = async (req, res, next)=>{
     if (!req.body?.ten) {
@@ -78,5 +79,19 @@ exports.delete = async (req, res, next)=>{
         return next (
             new ApiError(500, `Could not delete item with id=${req.params.id}`)
         );
+    }
+};
+exports.updateTinhTrang = async (req, res, next)=>{
+
+    try {
+        const client = await MongoDB.connect();
+        const all = await client.db().collection("items").findOne({_id: new ObjectId(req.params.id)})
+        const response = await client.db().collection("items").updateOne({_id: new ObjectId(req.params.id)},{$set:{tinhTrang: !all.tinhTrang}});
+        res.json({response});
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+        
     }
 };

@@ -11,5 +11,7 @@ router.route("/:id")
     .get(item.findOne)
     .put(item.update)
     .delete(item.delete);
+router.route("/tinhtrang/:id")
+.put(item.updateTinhTrang);
 
 module.exports = router;

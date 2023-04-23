@@ -1,5 +1,4 @@
 const {ObjectId} = require("mongodb");
-
 class BillService {
     constructor(client) {
         this.Bill = client.db().collection("bills")
@@ -14,6 +13,8 @@ class BillService {
             ngaymuon: payload.ngaymuon,
             ngaytra: payload.ngaytra,
             tinhTrang: payload.tinhTrang,
+            products: payload.products,
+
         };
         Object.keys(bill).forEach(
             (key) => bill[key] === undefined && delete bill[key]
