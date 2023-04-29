@@ -5,6 +5,8 @@ const router = express.Router();
 router.route("/")
     .post(bill.createBill)
     .get(bill.findAllBill);
+router.route("/:id")
+    .get(bill.findOne)
 
 
 

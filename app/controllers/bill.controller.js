@@ -54,3 +54,17 @@ exports.findAllBill = async (req, res, next)=>{
     }
     return res.send(documents);
 };
+exports.findOne = async (req, res, next)=>{
+    try {
+        const billService = new BillService(MongoDB.client);
+        const document = await billService.findById(req.params.id);
+        if(!document){
+            return next(new ApiError(404, "bill not found"));
+        } 
+        return res.send(document);       
+    } catch (error){
+        return next (
+            new ApiError(500, `Error retrieving bill with id=${req.params.id}`)
+        );
+    }
+};
