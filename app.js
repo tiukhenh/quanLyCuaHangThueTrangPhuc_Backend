@@ -5,7 +5,6 @@ const itemRouter = require("./app/routes/item.route");
 const userRouter = require("./app/routes/user.route");
 // const customerRouter = require("./app/routes/customer.route");
 const billRouter = require("./app/routes/bill.route");
-const billDetailRouter = require("./app/routes/billDetail.route");
 const ApiError = require("./app/api-error");
 
 const app = express();
@@ -17,7 +16,6 @@ app.use("/api/item", itemRouter);
 app.use("/api/user", userRouter);
 // app.use("/api/customer", customerRouter);
 app.use("/api/bill", billRouter);
-app.use("/api/billDetail", billDetailRouter);
 
 
 app.get('/', (req, res) => {

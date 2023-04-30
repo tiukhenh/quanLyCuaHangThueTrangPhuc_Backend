@@ -7,6 +7,7 @@ router.route("/")
     .get(bill.findAllBill);
 router.route("/:id")
     .get(bill.findOne)
+    .put(bill.updateTinhTrang);
 
 
 

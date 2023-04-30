@@ -1,7 +1,7 @@
 const BillService = require("../service/bill.service");
 const MongoDB = require("../utils/mongodb.util");
 const ApiError = require("../api-error")
-
+const { ObjectId } = require("mongodb");
 exports.createBill = async (req, res, next)=>{
     const address = req.body.address;
     const indentification = req.body.indentification;
@@ -9,9 +9,11 @@ exports.createBill = async (req, res, next)=>{
     const ngaylap =  req.body.ngaylap;
     const ngaymuon = req.body.ngaymuon;
     const ngaytra = req.body.ngaytra;
+    const ngaytrahientai = req.body.ngaytrahientai;
     const phone = req.body.phone;
     const tinhTrang =  req.body.tinhTrang;
     const products =  req.body.products;
+    const tongTien = req.body.tongTien;
     try {
         const client = await MongoDB.connect();
         const all = await client.db().collection("bills").insertOne({
@@ -21,9 +23,11 @@ exports.createBill = async (req, res, next)=>{
             ngaylap: ngaylap,
             ngaymuon: ngaymuon,
             ngaytra: ngaytra,
+            ngaytrahientai: ngaytrahientai,
             phone: phone,
             tinhTrang: tinhTrang,
             products: products,
+            tongTien: tongTien,
         });
         res.json({result: 'success', errorCode: 0, data: all});
        
@@ -68,3 +72,31 @@ exports.findOne = async (req, res, next)=>{
         );
     }
 };
+exports.updateTinhTrang = async (req, res, next)=>{
+
+    try {
+        const client = await MongoDB.connect();
+        const all = await client.db().collection("bills").findOne({_id: new ObjectId(req.params.id)})
+        const response = await client.db().collection("bills").updateOne({_id: new ObjectId(req.params.id)},{$set:{tinhTrang: !all.tinhTrang}});
+        res.json({response});
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+        
+    }
+};
+// exports.updateNgayTraHientai = async (req, res, next)=>{
+
+//     try {
+//         const client = await MongoDB.connect();
+//         const all = await client.db().collection("bills").findOne({_id: new ObjectId(req.params.id)})
+//         const response = await client.db().collection("bills").updateOne({_id: new ObjectId(req.params.id)},{$set:{ngaytrahientai: }});
+//         res.json({response});
+        
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).send(error);
+        
+//     }
+// };
