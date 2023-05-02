@@ -8,6 +8,8 @@ router.route("/")
 router.route("/:id")
     .get(bill.findOne)
     .put(bill.updateTinhTrang);
+router.route("/:id/return")
+    .put(bill.updateNgayTraHientai);
 
 
 

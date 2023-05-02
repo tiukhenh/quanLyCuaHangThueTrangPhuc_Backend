@@ -9,7 +9,7 @@ exports.createBill = async (req, res, next)=>{
     const ngaylap =  req.body.ngaylap;
     const ngaymuon = req.body.ngaymuon;
     const ngaytra = req.body.ngaytra;
-    const ngaytrahientai = req.body.ngaytrahientai;
+    const ngaytrahientai = "";
     const phone = req.body.phone;
     const tinhTrang =  req.body.tinhTrang;
     const products =  req.body.products;
@@ -86,17 +86,18 @@ exports.updateTinhTrang = async (req, res, next)=>{
         
     }
 };
-// exports.updateNgayTraHientai = async (req, res, next)=>{
+exports.updateNgayTraHientai = async (req, res, next)=>{
 
-//     try {
-//         const client = await MongoDB.connect();
-//         const all = await client.db().collection("bills").findOne({_id: new ObjectId(req.params.id)})
-//         const response = await client.db().collection("bills").updateOne({_id: new ObjectId(req.params.id)},{$set:{ngaytrahientai: }});
-//         res.json({response});
+    try {
+        var today = new Date();
+        var date = today.getDay()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
+        const client = await MongoDB.connect();
+        const all = await client.db().collection("bills").findOne({_id: new ObjectId(req.params.id)})
+        const response = await client.db().collection("bills").updateOne({_id: new ObjectId(req.params.id)},{$set:{ngaytrahientai: date}});
+        res.json({response});
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
         
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).send(error);
-        
-//     }
-// };
+    }
+};
